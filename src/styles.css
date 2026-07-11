@@ -1,0 +1,137 @@
+/* Fonts */
+
+@font-face {
+  font-family: "Inter";
+  src: url("./assets/fonts/Inter-VariableFont.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Merriweather";
+  src: url("./assets/fonts/Merriweather-VariableFont.ttf") format("truetype");
+  font-weight: 300 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Roboto Mono";
+  src: url("./assets/fonts/RobotoMono-VariableFont.ttf") format("truetype");
+  font-weight: 100 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Variables */
+
+:root {
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-serif: "Merriweather", Georgia, serif;
+  --font-code: "Roboto Mono", monospace;
+
+  --font-xs: 0.75rem;
+  --font-sm: 0.875rem;
+  --font-md: 1rem;
+  --font-lg: 1.25rem;
+  --font-xl: 1.5rem;
+  --font-2xl: 2rem;
+  --font-3xl: 3rem;
+
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 1rem;
+
+  --shadow-sm: 0 1px 3px rgb(0 0 0 / 0.12);
+  --shadow-md: 0 4px 8px rgb(0 0 0 / 0.12);
+}
+
+/* Reset */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+/* Base */
+
+html {
+  font-size: 100%;
+}
+
+body {
+  min-height: 100vh;
+  font-family: var(--font-serif);
+  font-size: var(--font-md);
+  line-height: 1.5;
+}
+
+/* Media */
+
+img,
+picture,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+/* Forms */
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* Text */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-serif);
+  line-height: 1.1;
+}
+
+p {
+  line-height: 1.5;
+}
+
+code,
+pre {
+  font-family: var(--font-code);
+}
+
+/* Links and lists */
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul,
+ol {
+  padding: 0;
+  list-style: none;
+}

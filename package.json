@@ -1,0 +1,50 @@
+{
+  "name": "code-template",
+  "version": "1.0.0",
+  "description": "Webpack frontend starter for The Odin Project JavaScript projects.",
+  "main": "webpack.common.js",
+  "scripts": {
+    "start": "webpack serve --config webpack.dev.js",
+    "dev": "webpack serve --config webpack.dev.js",
+    "build": "webpack --config webpack.prod.js",
+    "predeploy": "npm run build",
+    "deploy": "git add dist -f && git commit -m \"Deployment commit\" && git subtree push --prefix dist origin gh-pages",
+    "format": "prettier . --write",
+    "format:check": "prettier . --check",
+    "lint": "eslint .",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ali7488/codeTemp.git"
+  },
+  "keywords": [
+    "webpack",
+    "odin-project",
+    "javascript-template"
+  ],
+  "author": "Mohannad Ali",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/Ali7488/codeTemp/issues"
+  },
+  "homepage": "https://github.com/Ali7488/codeTemp#readme",
+  "devDependencies": {
+    "@babel/core": "^7.29.7",
+    "@babel/preset-env": "^7.29.7",
+    "babel-jest": "^30.4.1",
+    "css-loader": "^7.1.4",
+    "eslint": "^10.6.0",
+    "html-webpack-plugin": "^5.6.7",
+    "jest": "^30.4.2",
+    "prettier": "^3.9.4",
+    "style-loader": "^4.0.0",
+    "webpack": "^5.108.3",
+    "webpack-cli": "^7.1.0",
+    "webpack-dev-server": "^5.2.5",
+    "webpack-merge": "^6.0.1"
+  }
+}
