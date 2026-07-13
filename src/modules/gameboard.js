@@ -95,6 +95,34 @@ export default function createGameboard() {
     return true;
   };
 
-  
-  return { getBoard, addShip, resetBoard };
+  const receiveAttack = (row, col) => {
+    // Validate row
+    if (!Number.isInteger(row) || row < 0 || row >= 10) {
+      throw new Error("row must be an integer from 0 to 9");
+    }
+
+    // Validate column
+    if (!Number.isInteger(col) || col < 0 || col >= 10) {
+      throw new Error("col must be an integer from 0 to 9");
+    }
+
+    //Get the cell to attack, and check whether a ship is present
+    const cellToAttack = board[row][col];
+    if (cellToAttack.attacked) {
+      return "already-attacked";
+    }
+    cellToAttack.attacked = true;
+    const shipPresent = cellToAttack.ship !== null 
+
+    if (!shipPresent) {
+      return "miss";
+    }
+    cellToAttack.ship.hit();
+    if (cellToAttack.ship.isSunk()) {
+      return "sunk";
+    }
+    return "hit";
+  };
+
+  return { getBoard, addShip, resetBoard, receiveAttack };
 }

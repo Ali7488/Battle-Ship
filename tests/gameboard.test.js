@@ -276,7 +276,7 @@ describe("Gameboard", () => {
       expect(board[4][6].attacked).toBe(false);
     });
   });
-  
+
   describe("resetBoard", () => {
     test("resets all ships and attacks on the board", () => {
       gameboard.addShip(3, 2, 2, "horizontal");
@@ -292,6 +292,42 @@ describe("Gameboard", () => {
           expect(cell.attacked).toBe(false);
         });
       });
+    });
+  });
+
+  describe("receiveAttack", () => {
+    test("records a hit when attacking a cell containing a ship", () => {
+      gameboard.addShip(4, 3, 2, "horizontal");
+
+      const result = gameboard.receiveAttack(3, 2);
+
+      expect(result).toBe("hit");
+      expect(board[3][2].attacked).toBe(true);
+      expect(board[3][2].ship).not.toBeNull();
+    });
+
+    test("records a miss when attacking an empty cell", () => {
+      const result = gameboard.receiveAttack(6, 6);
+
+      expect(result).toBe("miss");
+      expect(board[6][6].attacked).toBe(true);
+      expect(board[6][6].ship).toBeNull();
+    });
+
+    test("returns sunk when the final ship section is hit", () => {
+       gameboard.addShip(2, 3, 2, "horizontal");
+
+       const ship = board[3][2].ship;
+
+       const firstResult = gameboard.receiveAttack(3, 3);
+       const finalResult = gameboard.receiveAttack(3, 2);
+
+       expect(firstResult).toBe("hit");
+       expect(finalResult).toBe("sunk");
+
+       expect(board[3][2].attacked).toBe(true);
+       expect(board[3][3].attacked).toBe(true);
+       expect(ship.isSunk()).toBe(true);
     });
   });
 });
