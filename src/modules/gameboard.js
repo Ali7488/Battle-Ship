@@ -112,7 +112,7 @@ export default function createGameboard() {
       return "already-attacked";
     }
     cellToAttack.attacked = true;
-    const shipPresent = cellToAttack.ship !== null 
+    const shipPresent = cellToAttack.ship !== null;
 
     if (!shipPresent) {
       return "miss";
@@ -124,5 +124,16 @@ export default function createGameboard() {
     return "hit";
   };
 
-  return { getBoard, addShip, resetBoard, receiveAttack };
+  // Flattens the 2D array into a 1D, filters it for all cells with ships, then checks that all the cells have been attacked
+  const allShipsSunk = () => {
+    const flattenedBoard = board.flat();
+    const shipsBoard = flattenedBoard.filter((cell) => cell.ship !== null);
+
+    if (shipsBoard.length === 0) return false;
+
+    const gameOverCheck = shipsBoard.every((cell) => cell.attacked === true);
+    return gameOverCheck;
+  };
+
+  return { getBoard, addShip, resetBoard, receiveAttack, allShipsSunk };
 }
