@@ -31,6 +31,47 @@
   --font-serif: "Merriweather", Georgia, serif;
   --font-code: "Roboto Mono", monospace;
 
+  /* Backgrounds */
+  --bg: #111827;
+  --bg-secondary: #1f2937;
+  --surface: #273549;
+  --surface-hover: #334155;
+
+  /* Borders */
+  --border: #3b475c;
+  --border-light: #475569;
+
+  /* Text */
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+
+  /* Accent */
+  --primary: #7c3aed;
+  --primary-hover: #8b5cf6;
+  --primary-active: #6d28d9;
+
+  /* Status */
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --info: #38bdf8;
+
+  /* Battleship-specific */
+  --water: #1e3a8a;
+  --water-light: #2563eb;
+  --ship: #64748b;
+  --ship-hit: #ef4444;
+  --ship-sunk: #991b1b;
+  --miss: #e2e8f0;
+
+  /* Shadows */
+  --shadow: rgba(0, 0, 0, 0.35);
+
+  /* Misc */
+  --radius: 12px;
+  --transition: 180ms ease;
+
   --font-xs: 0.75rem;
   --font-sm: 0.875rem;
   --font-md: 1rem;
@@ -38,6 +79,7 @@
   --font-xl: 1.5rem;
   --font-2xl: 2rem;
   --font-3xl: 3rem;
+  --font-4xl: 4rem;
 
   --space-xs: 0.25rem;
   --space-sm: 0.5rem;
@@ -74,9 +116,11 @@ html {
 
 body {
   min-height: 100vh;
-  font-family: var(--font-serif);
+  font-family: var(--font-sans);
   font-size: var(--font-md);
   line-height: 1.5;
+  background-color: var(--bg);
+  color: var(--text-primary);
 }
 
 /* Media */
@@ -134,4 +178,66 @@ ul,
 ol {
   padding: 0;
   list-style: none;
+}
+
+body {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+
+header {
+  background-color: var(--bg-secondary);
+  padding: var(--space-md);
+  text-align: center;
+}
+
+header > h1 {
+  font-size: var(--font-4xl);
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md);
+}
+
+#player1,
+#player2 {
+  text-align: center;
+}
+
+h3 {
+  margin-bottom: var(--space-md);
+}
+
+.game-board {
+  display: grid;
+  grid-template-columns: repeat(10, 2.5rem);
+  grid-template-rows: repeat(10, 2.5rem);
+  border: 2px dashed var(--border);
+}
+
+.game-cell {
+  border: 1px dashed var(--border);
+  box-sizing: border-box;
+}
+
+.game-cell-ship {
+  border: 1px solid var(--primary);
+  box-sizing: border-box;
+}
+
+footer {
+  background-color: var(--bg-secondary);
+  padding: var(--space-sm);
+  text-align: center;
+}
+footer > p > a {
+  font-weight: 600;
+}
+
+footer > p > a:hover {
+  color: rgb(192, 189, 189);
 }
