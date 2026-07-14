@@ -8,6 +8,9 @@ export default function createShip(length) {
     return ship;
   };
 
+  const getLength = () => {
+    return ship.length;
+  };
   const hit = () => {
     ship.hit++;
   };
@@ -20,5 +23,5 @@ export default function createShip(length) {
     return false;
   };
 
-  return { getShip, hit, isSunk };
+  return { getShip, hit, isSunk, getLength };
 }
