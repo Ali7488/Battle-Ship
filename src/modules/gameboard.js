@@ -1,7 +1,7 @@
 import createShip from "./ship.js";
 
 export default function createGameboard() {
-  //creates the gameboard as a 10x10 2D array that stores null for all empty posititions
+  //creates the gameboard as a 10x10 2D array that stores null for all empty positions
   const board = Array.from({ length: 10 }, () => {
     return Array.from({ length: 10 }, () => ({ ship: null, attacked: false }));
   });
@@ -12,6 +12,7 @@ export default function createGameboard() {
   };
 
   // reset board method for restarting the game
+
   const resetBoard = () => {
     board.forEach((row) => {
       row.forEach((cell) => {
@@ -117,10 +118,12 @@ export default function createGameboard() {
     if (!shipPresent) {
       return "miss";
     }
+
     cellToAttack.ship.hit();
     if (cellToAttack.ship.isSunk()) {
       return "sunk";
     }
+
     return "hit";
   };
 
