@@ -66,3 +66,22 @@ function renderSingleCell(revealShips, cell, indexRow, indexCol) {
 
   return button;
 }
+
+export function switchTurnScreen() {
+  const gameScreen = document.getElementById("gameScreen");
+  const hiddenScreen = document.getElementById("hiddenScreen");
+
+  gameScreen.classList.toggle("hidden");
+  hiddenScreen.classList.toggle("hidden");
+}
+
+export function displayWinner(winner) {
+  const winnerName = document.getElementById("winnerName");
+  const gameScreen = document.getElementById("gameScreen");
+  const winnerScreen = document.getElementById("winnerScreen");
+
+  gameScreen.classList.add("hidden");
+  winnerScreen.classList.remove("hidden");
+  const displayName = winner.charAt(0).toUpperCase() + winner.slice(1);
+  winnerName.textContent = displayName;
+}
