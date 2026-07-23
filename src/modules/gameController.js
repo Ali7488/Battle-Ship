@@ -37,6 +37,16 @@ export default function gameController(mode) {
   currentPlayer = player1;
   currentOpponent = player2;
 
+  const fleetTemplate = [2, 3, 3, 3, 4];
+
+  let phase = "placement";
+  let currentPlacementPlayerId = "player1";
+
+  const remainingShips = {
+    player1: [...fleetTemplate],
+    player2: normalizedMode === "human" ? [...fleetTemplate] : [],
+  };
+
   const getCurrentPlayerId = () => {
     return currentPlayer === player1 ? "player1" : "player2";
   };
@@ -46,6 +56,72 @@ export default function gameController(mode) {
 
     currentPlayer = currentOpponent;
     currentOpponent = previousPlayer;
+  };
+
+  const placeShip = (length, row, col, orientation) => {
+    if (phase !== "placement") {
+      return {
+        placementStatus: "placement-finished",
+        placedShip: null,
+      };
+    }
+
+    const shipsToPlace = remainingShips[currentPlacementPlayerId];
+    const shipIndex = shipsToPlace.indexOf(length);
+
+    if (shipIndex === -1) {
+      return {
+        placementStatus: "ship-not-available",
+        placedShip: null,
+      };
+    }
+
+    const placementBoard =
+      currentPlacementPlayerId === "player1" ? player1 : player2;
+
+    const placementSucceeded = placementBoard.addShip(
+      length,
+      row,
+      col,
+      orientation,
+    );
+
+    if (!placementSucceeded) {
+      return {
+        placementStatus: "invalid-placement",
+        placedShip: null,
+      };
+    }
+
+    const placedBy = currentPlacementPlayerId;
+
+    // Remove only one occurrence because the fleet contains repeated lengths.
+    shipsToPlace.splice(shipIndex, 1);
+
+    if (shipsToPlace.length === 0) {
+      if (
+        normalizedMode === "human" &&
+        currentPlacementPlayerId === "player1"
+      ) {
+        currentPlacementPlayerId = "player2";
+      } else {
+        phase = "playing";
+        currentPlacementPlayerId = null;
+        currentPlayer = player1;
+        currentOpponent = player2;
+      }
+    }
+
+    return {
+      placementStatus: "placed",
+      placedShip: {
+        placedBy,
+        length,
+        row,
+        col,
+        orientation,
+      },
+    };
   };
 
   // logic for game in player vs player
@@ -134,10 +210,19 @@ export default function gameController(mode) {
   };
 
   const playTurn = (row, col) => {
+    if (phase !== "playing") {
+      return {
+        winner,
+        attacks: [],
+        turnStatus: "placement-not-finished",
+      };
+    }
+
     if (winner !== null) {
       return {
         winner,
         attacks: [],
+        turnStatus: "game-finished",
       };
     }
 
@@ -149,15 +234,24 @@ export default function gameController(mode) {
   };
 
   const getGameState = () => {
+    const remainingShipsToPlace =
+      currentPlacementPlayerId === null
+        ? []
+        : [...remainingShips[currentPlacementPlayerId]];
+
     return {
       player1Board: player1.getBoard(),
       player2Board: player2.getBoard(),
       currentPlayerId: getCurrentPlayerId(),
+      currentPlacementPlayerId,
+      remainingShipsToPlace,
+      phase,
       winner,
     };
   };
 
   return {
+    placeShip,
     playTurn,
     getGameState,
   };
