@@ -9,18 +9,49 @@
     <header>
       <h1>Battleship</h1>
     </header>
-    <main>
+
+    <section id="homeScreen">
+      <button
+        type="button"
+        id="computerGame"
+        class="homeScreenBtn"
+        data-action="computer"
+      >
+        Play vs Computer
+      </button>
+      <button
+        type="button"
+        id="humanGame"
+        class="homeScreenBtn"
+        data-action="human"
+      >
+        Play vs Player
+      </button>
+    </section>
+
+    <main id="gameScreen" class="hidden">
       <div id="player1">
         <h3>Player 1</h3>
-        <div id="player1-grid" class="game-board">
-        </div>
+        <div id="player1-grid" class="game-board" data-player="player1"></div>
       </div>
 
       <div id="player2">
         <h3>Player 2</h3>
-        <div id="player2-grid" class="game-board"></div>
+        <div id="player2-grid" class="game-board" data-player="player2"></div>
       </div>
     </main>
+
+    <section id="hiddenScreen" class="hidden">
+      <h2>Pass to the next player then press the button</h2>
+      <button type="button" id="passPlayer" class="passBtn">I'm Ready</button>
+    </section>
+
+    <section id="winnerScreen" class="hidden">
+      <h1><span id="winnerName"></span> has won the game!</h1>
+      <button type="button" id="restartGameBtn" class="restartBtn">
+        Play Again
+      </button>
+    </section>
     <footer>
       <p>Built by <a href="https://github.com/Ali7488">Mohannad Ali</a></p>
     </footer>

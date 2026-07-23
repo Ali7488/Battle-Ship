@@ -195,7 +195,40 @@ header > h1 {
   font-size: var(--font-4xl);
 }
 
-main {
+#computerGame,
+#humanGame,
+.passBtn,
+.restartBtn {
+  height: 300px;
+  width: 300px;
+  border-radius: var(--radius-lg);
+  background-color: var(--surface-hover);
+  border: 4px solid var(--surface);
+  color: var(--text-primary);
+  font-size: var(--font-2xl);
+  font-weight: 600;
+  text-align: center;
+}
+
+#computerGame:hover,
+#humanGame:hover,
+.passBtn:hover,
+.restartBtn:hover {
+  background-color: var(--surface);
+}
+
+#computerGame:active,
+#humanGame:active,
+.passBtn:active,
+.restartBtn:active {
+  transform: scale(0.97);
+  background-color: var(--surface-hover);
+}
+
+main,
+#homeScreen,
+#hiddenScreen,
+#winnerScreen {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -203,11 +236,17 @@ main {
   padding: var(--space-md);
 }
 
+#hiddenScreen,
+#winnerScreen {
+  flex-direction: column;
+}
+
 #player1,
 #player2 {
   text-align: center;
 }
-
+h1,
+h2,
 h3 {
   margin-bottom: var(--space-md);
 }
@@ -216,17 +255,35 @@ h3 {
   display: grid;
   grid-template-columns: repeat(10, 2.5rem);
   grid-template-rows: repeat(10, 2.5rem);
-  border: 2px dashed var(--border);
+  border: 2px dashed var(--text-primary);
 }
 
 .game-cell {
-  border: 1px dashed var(--border);
+  border: 1px dashed var(--text-primary);
+  background-color: var(--water);
   box-sizing: border-box;
 }
 
 .game-cell-ship {
   border: 1px solid var(--primary);
+  background-color: var(--primary);
   box-sizing: border-box;
+}
+
+.game-cell:hover {
+  background-color: var(--water-light);
+}
+
+.game-cell-ship:hover {
+  background-color: var(--primary-hover);
+}
+
+.game-cell.miss {
+  background-color: var(--miss);
+}
+
+.game-cell.hit {
+  background-color: var(--ship-hit);
 }
 
 footer {
@@ -240,4 +297,8 @@ footer > p > a {
 
 footer > p > a:hover {
   color: rgb(192, 189, 189);
+}
+
+.hidden {
+  display: none !important;
 }
