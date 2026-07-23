@@ -4,6 +4,7 @@ import {
   renderGrid,
   switchTurnScreen,
   displayWinner,
+  restartGame,
 } from "./renderPage.js";
 
 export default function initEventHandlers() {
@@ -11,6 +12,7 @@ export default function initEventHandlers() {
   const homeScreen = document.getElementById("homeScreen");
   const gameScreen = document.getElementById("gameScreen");
   const passBtn = document.getElementById("passPlayer");
+  const restartBtn = document.getElementById("restartGameBtn");
 
   //Initialize gameController
   let activeController;
@@ -68,5 +70,9 @@ export default function initEventHandlers() {
     switchTurnScreen();
     const gameState = activeController.getGameState();
     renderGrid(gameState);
+  });
+
+  restartBtn.addEventListener("click", () => {
+    restartGame();
   });
 }

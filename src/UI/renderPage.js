@@ -85,3 +85,13 @@ export function displayWinner(winner) {
   const displayName = winner.charAt(0).toUpperCase() + winner.slice(1);
   winnerName.textContent = displayName;
 }
+
+export function restartGame() {
+  const gameScreen = document.getElementById("gameScreen");
+  const winnerScreen = document.getElementById("winnerScreen");
+  const homePage = document.getElementById("homeScreen");
+
+  gameScreen.classList.add("hidden");
+  winnerScreen.classList.add("hidden");
+  homePage.classList.remove("hidden");
+}
