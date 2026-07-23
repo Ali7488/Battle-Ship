@@ -4,6 +4,30 @@ describe("gameController", () => {
   let controllerPc;
   let controllerHuman;
 
+  const fleetPlacements = [
+    { length: 2, row: 0, col: 0, orientation: "horizontal" },
+    { length: 3, row: 1, col: 0, orientation: "horizontal" },
+    { length: 3, row: 2, col: 0, orientation: "horizontal" },
+    { length: 3, row: 3, col: 0, orientation: "horizontal" },
+    { length: 4, row: 4, col: 0, orientation: "horizontal" },
+  ];
+
+  const placeFleetForCurrentPlayer = (controller) => {
+    fleetPlacements.forEach(({ length, row, col, orientation }) => {
+      const result = controller.placeShip(length, row, col, orientation);
+      expect(result.placementStatus).toBe("placed");
+    });
+  };
+
+  const finishComputerPlacement = () => {
+    placeFleetForCurrentPlayer(controllerPc);
+  };
+
+  const finishHumanPlacement = () => {
+    placeFleetForCurrentPlayer(controllerHuman);
+    placeFleetForCurrentPlayer(controllerHuman);
+  };
+
   const countAttackedCells = (board) => {
     return board.flat().filter((cell) => cell.attacked).length;
   };
@@ -48,6 +72,9 @@ describe("gameController", () => {
           player1Board: expect.any(Array),
           player2Board: expect.any(Array),
           currentPlayerId: "player1",
+          currentPlacementPlayerId: "player1",
+          remainingShipsToPlace: [2, 3, 3, 3, 4],
+          phase: "placement",
           winner: null,
         }),
       );
@@ -69,7 +96,82 @@ describe("gameController", () => {
     });
   });
 
+  describe("fleet placement", () => {
+    test("removes one matching ship after a valid placement", () => {
+      const result = controllerHuman.placeShip(3, 0, 0, "horizontal");
+      const state = controllerHuman.getGameState();
+
+      expect(result.placementStatus).toBe("placed");
+      expect(state.remainingShipsToPlace).toEqual([2, 3, 3, 4]);
+    });
+
+    test("does not remove a ship after an invalid overlapping placement", () => {
+      controllerHuman.placeShip(3, 0, 0, "horizontal");
+
+      const result = controllerHuman.placeShip(2, 0, 1, "horizontal");
+      const state = controllerHuman.getGameState();
+
+      expect(result.placementStatus).toBe("invalid-placement");
+      expect(state.remainingShipsToPlace).toEqual([2, 3, 3, 4]);
+    });
+
+    test("moves placement to player2 after player1 finishes in human mode", () => {
+      placeFleetForCurrentPlayer(controllerHuman);
+
+      const state = controllerHuman.getGameState();
+
+      expect(state.phase).toBe("placement");
+      expect(state.currentPlacementPlayerId).toBe("player2");
+      expect(state.remainingShipsToPlace).toEqual([2, 3, 3, 3, 4]);
+    });
+
+    test("starts gameplay after player1 finishes in computer mode", () => {
+      finishComputerPlacement();
+
+      const state = controllerPc.getGameState();
+
+      expect(state.phase).toBe("playing");
+      expect(state.currentPlacementPlayerId).toBeNull();
+      expect(state.remainingShipsToPlace).toEqual([]);
+    });
+
+    test("starts gameplay after both humans finish placement", () => {
+      finishHumanPlacement();
+
+      const state = controllerHuman.getGameState();
+
+      expect(state.phase).toBe("playing");
+      expect(state.currentPlacementPlayerId).toBeNull();
+      expect(state.currentPlayerId).toBe("player1");
+    });
+
+    test("blocks attacks before placement is finished", () => {
+      const result = controllerHuman.playTurn(4, 6);
+
+      expect(result).toEqual({
+        winner: null,
+        attacks: [],
+        turnStatus: "placement-not-finished",
+      });
+    });
+
+    test("blocks placements after gameplay starts", () => {
+      finishComputerPlacement();
+
+      const result = controllerPc.placeShip(2, 8, 0, "horizontal");
+
+      expect(result).toEqual({
+        placementStatus: "placement-finished",
+        placedShip: null,
+      });
+    });
+  });
+
   describe("human versus computer", () => {
+    beforeEach(() => {
+      finishComputerPlacement();
+    });
+
     test("returns one human attack and one computer attack", () => {
       const result = controllerPc.playTurn(4, 6);
 
@@ -155,6 +257,10 @@ describe("gameController", () => {
   });
 
   describe("human versus human", () => {
+    beforeEach(() => {
+      finishHumanPlacement();
+    });
+
     test("starts with player1", () => {
       const state = controllerHuman.getGameState();
 
