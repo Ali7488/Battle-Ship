@@ -8,7 +8,13 @@ export function startGame() {
 
 export function renderGrid(gameState) {
   //destructure the gameState object
-  const { player1Board, player2Board, currentPlayerId } = gameState;
+  const {
+    player1Board,
+    player2Board,
+    currentPlayerId,
+    currentPlacementPlayerId,
+    phase,
+  } = gameState;
   const player1Grid = document.getElementById("player1-grid");
   const player2Grid = document.getElementById("player2-grid");
 
@@ -16,8 +22,11 @@ export function renderGrid(gameState) {
   player1Grid.replaceChildren();
   player2Grid.replaceChildren();
 
-  const revealPlayer1sShips = currentPlayerId === "player1";
-  const revealPlayer2sShips = currentPlayerId === "player2";
+  const visiblePlayerId =
+    phase === "placement" ? currentPlacementPlayerId : currentPlayerId;
+
+  const revealPlayer1sShips = visiblePlayerId === "player1";
+  const revealPlayer2sShips = visiblePlayerId === "player2";
 
   //iterates through the arrays and displays the cells
   player1Board.forEach((row, indexRow) => {
@@ -45,6 +54,59 @@ export function renderGrid(gameState) {
       player2Grid.appendChild(button);
     });
   });
+}
+
+export function renderPlacementControls(
+  gameState,
+  selectedShipLength,
+  selectedOrientation,
+  message = "",
+) {
+  const placementControls = document.getElementById("placementControls");
+  const placementTitle = document.getElementById("placementTitle");
+  const shipOptions = document.getElementById("shipOptions");
+  const rotateShipBtn = document.getElementById("rotateShipBtn");
+  const placementStatus = document.getElementById("placementStatus");
+
+  if (gameState.phase !== "placement") {
+    placementControls.classList.add("hidden");
+    shipOptions.replaceChildren();
+    placementStatus.textContent = "";
+    return;
+  }
+
+  placementControls.classList.remove("hidden");
+
+  const displayName =
+    gameState.currentPlacementPlayerId === "player1" ? "Player 1" : "Player 2";
+
+  placementTitle.textContent = `${displayName}: Place your fleet`;
+  rotateShipBtn.textContent = `Orientation: ${
+    selectedOrientation.charAt(0).toUpperCase() + selectedOrientation.slice(1)
+  }`;
+
+  shipOptions.replaceChildren();
+
+  let selectedButtonMarked = false;
+
+  gameState.remainingShipsToPlace.forEach((length) => {
+    const shipButton = document.createElement("button");
+
+    shipButton.type = "button";
+    shipButton.classList.add("ship-option");
+    shipButton.dataset.length = length;
+    shipButton.textContent = `Length ${length}`;
+
+    if (!selectedButtonMarked && selectedShipLength === length) {
+      shipButton.classList.add("selected");
+      selectedButtonMarked = true;
+    }
+
+    shipOptions.appendChild(shipButton);
+  });
+
+  placementStatus.textContent =
+    message || "Select a ship, choose its orientation, then click your board.";
 }
 
 function renderSingleCell(revealShips, cell, indexRow, indexCol) {

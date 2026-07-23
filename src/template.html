@@ -30,6 +30,20 @@
     </section>
 
     <main id="gameScreen" class="hidden">
+      <section id="placementControls" class="placement-controls">
+        <h2 id="placementTitle">Player 1: Place your fleet</h2>
+
+        <div class="placement-actions">
+          <div id="shipOptions" class="ship-options"></div>
+
+          <button type="button" id="rotateShipBtn" class="rotate-ship-btn">
+            Orientation: Horizontal
+          </button>
+        </div>
+
+        <p id="placementStatus" class="placement-status"></p>
+      </section>
+
       <div id="player1">
         <h3>Player 1</h3>
         <div id="player1-grid" class="game-board" data-player="player1"></div>
