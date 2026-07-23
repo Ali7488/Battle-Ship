@@ -43,11 +43,7 @@ export default function initEventHandlers() {
 
     const gameState = activeController.getGameState();
     renderGrid(gameState);
-    renderPlacementControls(
-      gameState,
-      selectedShipLength,
-      selectedOrientation,
-    );
+    renderPlacementControls(gameState, selectedShipLength, selectedOrientation);
   });
 
   gameScreen.addEventListener("click", (event) => {
@@ -147,10 +143,16 @@ export default function initEventHandlers() {
 
     if (clickedGridOwner === currentPlayer) return;
 
-    const { winner } = activeController.playTurn(row, col);
+    const result = activeController.playTurn(row, col);
 
-    if (winner !== null) {
-      displayWinner(winner);
+    const attackStatus = result.attacks[0]?.attackStatus;
+
+    if (attackStatus === "already-attacked") {
+      return;
+    }
+
+    if (result.winner !== null) {
+      displayWinner(result.winner);
       return;
     }
 
@@ -167,11 +169,7 @@ export default function initEventHandlers() {
 
     const gameState = activeController.getGameState();
     renderGrid(gameState);
-    renderPlacementControls(
-      gameState,
-      selectedShipLength,
-      selectedOrientation,
-    );
+    renderPlacementControls(gameState, selectedShipLength, selectedOrientation);
   });
 
   restartBtn.addEventListener("click", () => {

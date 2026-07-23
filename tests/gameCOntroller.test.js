@@ -329,16 +329,4 @@ describe("gameController", () => {
       expect(state.player2Board[4][6].attacked).toBe(true);
     });
   });
-
-  describe("winning behavior", () => {
-    test.todo("sets player1 as winner when player1 sinks player2's fleet");
-
-    test.todo("sets player2 as winner when player2 sinks player1's fleet");
-
-    test.todo(
-      "sets computer as winner when the computer sinks player1's fleet",
-    );
-
-    test.todo("prevents additional board mutations after a winner is assigned");
-  });
 });
