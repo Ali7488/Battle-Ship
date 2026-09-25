@@ -1,5 +1,7 @@
 # Battleship
 
+![CI](https://github.com/Ali7488/Battle-Ship/actions/workflows/ci.yml/badge.svg)
+
 A browser-based implementation of Battleship built with modular JavaScript. The project separates game rules and state from DOM rendering, supports both local multiplayer and computer opponents, and includes 64 Jest test cases across the domain layer.
 
 [Live Demo](https://ali7488.github.io/Battle-Ship/)
